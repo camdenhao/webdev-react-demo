@@ -36,3 +36,21 @@
     transform: rotate(360deg);
   }
 }
+
+.friend{
+  color: purple;
+  background-color: white;
+  border-color: blue;
+  border-radius: 10px;
+  border-style: solid;
+  font-size: 12pt;
+  padding: 5px;
+  margin: 10px;
+}
+
+.friend-container{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: flex-end;
+}
