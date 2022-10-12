@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Map } from 'immutable';
 import DogPosting from './DogPosting';
-
+import '../styles/dog-styling.css';
 class DogBoard extends Component{
 
     constructor(props){
@@ -48,28 +48,43 @@ class DogBoard extends Component{
 
     render(){
         return(
-            <div>
-                <p>This is the dog board!!!</p>
-                <p>Here is your selected dog name:</p>
+            <div className="board-container">
+                <header>
+                    <p className='title'>Dog Board!!!</p>
+                </header>
+                <p>Selected Name:</p>
                 <p>{this.state.selectedDogName}</p>
-                <input onChange={this.handleNewDogName}/> 
-                <input onChange={this.handleNewDogBreed}/>
-                <input onChange={this.handleNewDogUrl}/>
-                <button onClick={this.createDog}>Create dog</button> 
-                {this.state.dogs.entrySeq().map(
-                    ([id, dog]) => {
-                        return (
-                            <DogPosting
-                            name={dog.name}
-                            breed={dog.breed}
-                            image={dog.image}
-                            selectDogFunction={this.selectDog}
-                            id={id}
-                            key={id}
-                            />
-                        );
-                    }
-                )}
+                <div className='input-container'>
+                    <div className='form-field'>
+                        <p>Name:</p>
+                        <input className='form-input' onChange={this.handleNewDogName}/> 
+                    </div>
+                    <div className='form-field'>
+                        <p>Breed:</p>
+                        <input className='form-input' onChange={this.handleNewDogBreed}/>
+                    </div>
+                    <div className='form-field'>
+                        <p>Image URL:</p>
+                        <input className='form-input' onChange={this.handleNewDogUrl}/>
+                    </div>
+                </div>
+                <button className='submit-button' onClick={this.createDog}>Create dog</button> 
+                <div className='dog-posting-container'>
+                    {this.state.dogs.entrySeq().map(
+                        ([id, dog]) => {
+                            return (
+                                <DogPosting
+                                name={dog.name}
+                                breed={dog.breed}
+                                image={dog.image}
+                                selectDogFunction={this.selectDog}
+                                id={id}
+                                key={id}
+                                />
+                            );
+                        }
+                    )}
+                </div>
             </div>
         )
     }

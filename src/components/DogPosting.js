@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import '../styles/dog-styling.css';
 
 class DogPosting extends Component{
     constructor(props){
@@ -8,11 +9,13 @@ class DogPosting extends Component{
 
     render() {
         return(
-            <div>
-                <p>{this.props.name}</p>
-                <p>{this.props.breed}</p>
-                <img src={this.props.image} alt="dog"/>
-                <button onClick={() => this.props.selectDogFunction(this.props.name)}>Select me!!!!</button>
+            <div className='dog-posting'>
+                <img src={this.props.image} alt="dog" className='dog-image'/>
+                <div className='dog-info'>
+                    <p>{this.props.name}</p>
+                    <p>{this.props.breed}</p>
+                </div>
+                <button className='select-button' onClick={() => this.props.selectDogFunction(this.props.name)}>Select me!!!!</button>
             </div>
         )
     }
