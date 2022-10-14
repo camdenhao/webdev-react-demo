@@ -1,19 +1,24 @@
 import React, {Component} from 'react';
-import { Map } from 'immutable';
 import DogPosting from './DogPosting';
 import '../styles/dog-styling.css';
+import db from '../firebase/index';
+
 class DogBoard extends Component{
 
     constructor(props){
         super(props);
         this.state = {
-            dogs: Map(),
+            dogs: [],
             dogId: 0,
             newDogName: '',
             newDogBreed: '',
             newDogUrl: '',
             selectedDogName: '',
         }
+    }
+
+    componentDidMount() {
+        this.fetchDogs()
     }
 
     handleNewDogName = (event) => {
@@ -44,6 +49,41 @@ class DogBoard extends Component{
     selectDog = (name) => {
         this.setState({selectedDogName: name});
     }
+
+    saveNewDog = () => { 
+        db.collection('dogs').add({
+            name: this.state.newDogName,
+            breed: this.state.newDogBreed,
+            url: this.state.newDogUrl
+        }).then(ref => {
+          this.setState({
+            id: this.state.dogId + 1,
+          });
+        })
+        .then(() =>
+            this.fetchDogs()
+        ).catch(error => {
+        });
+    }
+    
+    fetchDogs = () => {
+        const dogData = [];
+
+        db.collection('dogs').get()
+            .then(querySnapshot => {
+                querySnapshot.forEach( doc => {
+                    console.log(doc.data());
+                    dogData.push(doc.data());
+                })
+            }).then(() => {
+                this.setState({
+                    dogs: dogData
+                });
+            })
+            .catch(err => {
+                console.log(err.message)
+            })
+    }
    
 
     render(){
@@ -68,18 +108,18 @@ class DogBoard extends Component{
                         <input className='form-input' onChange={this.handleNewDogUrl}/>
                     </div>
                 </div>
-                <button className='submit-button' onClick={this.createDog}>Create dog</button> 
+                <button className='submit-button' onClick={this.saveNewDog}>Create dog</button> 
                 <div className='dog-posting-container'>
-                    {this.state.dogs.entrySeq().map(
-                        ([id, dog]) => {
+                    {this.state.dogs.map(
+                        (dog) => {
                             return (
                                 <DogPosting
                                 name={dog.name}
                                 breed={dog.breed}
-                                image={dog.image}
+                                image={dog.url}
                                 selectDogFunction={this.selectDog}
-                                id={id}
-                                key={id}
+                                id={dog.id}
+                                key={dog.id}
                                 />
                             );
                         }
