@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import DogPosting from './DogPosting';
 import '../styles/dog-styling.css';
 import db from '../firebase/index';
-
+import axios from 'axios';
 class DogBoard extends Component{
 
     constructor(props){
@@ -14,6 +14,8 @@ class DogBoard extends Component{
             newDogBreed: '',
             newDogUrl: '',
             selectedDogName: '',
+            pokemonName: '',
+            pokemonData: {},
         }
     }
 
@@ -68,7 +70,6 @@ class DogBoard extends Component{
     
     fetchDogs = () => {
         const dogData = [];
-
         db.collection('dogs').get()
             .then(querySnapshot => {
                 querySnapshot.forEach( doc => {
@@ -85,6 +86,12 @@ class DogBoard extends Component{
             })
     }
    
+    searchPokemon = () => {
+        axios.get(`https://pokeapi.co/api/v2/pokemon/${this.state.pokemonName}`).then((res) => {
+            console.log(res);
+            this.setState({pokemonData: res.data});
+        })
+    }
 
     render(){
         return(
@@ -92,6 +99,10 @@ class DogBoard extends Component{
                 <header>
                     <p className='title'>Dog Board!!!</p>
                 </header>
+                <input onChange={(event) => this.setState({pokemonName: event.target.value})} />
+                <button onClick={() => this.searchPokemon()}>Search for pokemon!</button>
+                <p>{this.state.pokemonData.name}</p>
+                <img src={this.state.pokemonData.sprites?.front_default} alt="empty"/>
                 <p>Selected Name:</p>
                 <p>{this.state.selectedDogName}</p>
                 <div className='input-container'>
