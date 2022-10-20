@@ -41,7 +41,6 @@ class DogBoard extends Component{
             breed: this.state.newDogBreed,
             image: this.state.newDogUrl
         }
-
         this.setState({
             dogs: this.state.dogs.set(this.state.dogId, dogData),
             dogId: this.state.dogId + 1,
@@ -102,7 +101,7 @@ class DogBoard extends Component{
                 <input onChange={(event) => this.setState({pokemonName: event.target.value})} />
                 <button onClick={() => this.searchPokemon()}>Search for pokemon!</button>
                 <p>{this.state.pokemonData.name}</p>
-                <img src={this.state.pokemonData.sprites?.front_default} alt="empty"/>
+                <img src={this.state.pokemonData.sprites?.front_default} alt="empty" className="pokemon-image"/>
                 <p>Selected Name:</p>
                 <p>{this.state.selectedDogName}</p>
                 <div className='input-container'>
